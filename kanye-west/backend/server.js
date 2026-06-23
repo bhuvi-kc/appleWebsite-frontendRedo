@@ -4,7 +4,7 @@ const axios = require('axios');
 require('dotenv').config({ path: '../.env' });
 
 const app = express();
-app.use(cors({ origin: ['http://127.0.0.1:5173', 'http://localhost:5173'] }));
+app.use(cors({ origin: ['http://127.0.0.1:5173', 'http://localhost:5173', 'https://kanye-west-tau.vercel.app'] }));
 app.use(express.json());
 
 const CLIENT_ID = process.env.VITE_SPOTIFY_CLIENT_ID;
