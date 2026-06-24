@@ -9,6 +9,7 @@ export function loginWithSpotify() {
 }
 
 export async function exchangeCodeForToken(code) {
+  await fetch(`${BACKEND_URL}/ping`).catch(() => {})
   const response = await fetch(`${BACKEND_URL}/callback?code=${code}`);
   const data = await response.json();
   if (data.access_token) {

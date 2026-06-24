@@ -65,4 +65,6 @@ app.get('/refresh', async (req, res) => {
   }
 });
 
+app.get('/ping', (req, res) => res.json({ ok: true }));
+
 app.listen(3001, () => console.log('Backend running on http://localhost:3001'));
