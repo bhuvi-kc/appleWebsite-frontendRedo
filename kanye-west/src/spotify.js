@@ -52,14 +52,17 @@ export async function getValidToken() {
   return getStoredToken();
 }
 
-export async function playTrack(deviceId, trackUri, token) {
+export async function playTrack(deviceId, trackUri, token, albumUris = []) {
   await fetch(`https://api.spotify.com/v1/me/player/play?device_id=${deviceId}`, {
     method: 'PUT',
     headers: {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ uris: [trackUri] }),
+    body: JSON.stringify({ 
+      uris: albumUris.length ? albumUris : [trackUri],
+      offset: { uri: trackUri }
+    }),
   });
 }
 

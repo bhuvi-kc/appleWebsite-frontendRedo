@@ -20,11 +20,11 @@ const ALBUM_IDS = {
 }
 
 const FALLBACK_COVERS = {
-  'Watch The Throne': 'https://preview.redd.it/watch-the-throne-is-such-a-damn-underrated-album-v0-wop0hu8arg3e1.png?width=720&format=png&auto=webp&s=8e834e775c8b4495c7d518bfe3e3f8b1b423bcd8',
+  'Watch The Throne': 'https://upload.wikimedia.org/wikipedia/en/7/74/Watch_The_Throne.png',
   'Cruel Summer': 'https://upload.wikimedia.org/wikipedia/en/a/ab/CruelSummercover.jpg',
-  'Kids See Ghosts': 'https://wallpapercave.com/wp/wp11341012.jpg',
-  'Donda 2': 'https://i.pinimg.com/736x/d4/39/dd/d439dd8aa15e1065a329cef0ead132d6.jpg',
-  'Vultures 1': 'https://preview.redd.it/sfw-version-of-vultures-album-cover-v0-unudk5lqvuhc1.png?width=640&crop=smart&auto=webp&s=6a808d9afec8b56accf5906f37a90243159a746f',
+  'Kids See Ghosts': 'https://upload.wikimedia.org/wikipedia/en/3/35/Kids_See_Ghosts_-_Kids_See_Ghosts.png',
+  'Donda 2': 'https://upload.wikimedia.org/wikipedia/en/6/6d/Donda_2_cover.png',
+  'Vultures 1': 'https://upload.wikimedia.org/wikipedia/en/3/3a/Vultures_1_album_cover.jpg',
 }
 
 async function fetchAlbumCovers(token, albumData) {
@@ -76,8 +76,12 @@ function Albums({ token, deviceId }) {
     if (!token || !deviceId) return
     setLoading(true)
     setPlayingTrack(track)
-    const uri = await searchTrack(track, 'Kanye West', token)
-    if (uri) await playTrack(deviceId, uri, token)
+    const allUris = await Promise.all(
+      album.tracks.map(t => searchTrack(t, 'Kanye West', token))
+    )
+    const filteredUris = allUris.filter(Boolean)
+    const trackUri = await searchTrack(track, 'Kanye West', token)
+    if (trackUri) await playTrack(deviceId, trackUri, token, filteredUris)
     setLoading(false)
   }
 
