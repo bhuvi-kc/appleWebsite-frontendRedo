@@ -170,3 +170,7 @@ html, body {
   transition: color 0.2s ease;
   user-select: none;
 }
+
+html, body {
+  overflow-x: hidden;
+}

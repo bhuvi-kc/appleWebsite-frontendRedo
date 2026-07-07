@@ -160,24 +160,22 @@ export default function Stack({
             sensitivity={sensitivity}
             disableDrag={true}
           >
-          <motion.div
-            className="overflow-hidden w-full h-full"
-            style={{ boxShadow: '0 0 4px 10px rgba(255, 255, 255, 0.3)', zIndex: index }}
-            whileHover={{ zIndex: 999 }}
-            whileTap={{ zIndex: 999 }}
-            onClick={() => shouldEnableClick && sendToBack(card.id)}
-            animate={{
-              rotateZ: isHovered ? (index - (stack.length - 1) / 2) * 15 : (stack.length - index - 1) * 4 + randomRotate,
-              x: isHovered ? (index - (stack.length - 1) / 2) * 140 : 0,
-              transformOrigin: 'center center',
-            }}
-            initial={false}
-            transition={{
-              type: 'spring',
-              stiffness: animationConfig.stiffness,
-              damping: animationConfig.damping
-            }}
-          >
+        <motion.div
+          className="overflow-hidden w-full h-full"
+          style={{ boxShadow: '0 0 4px 10px rgba(255, 255, 255, 0.3)', position: 'relative', zIndex: index }}
+          onClick={() => shouldEnableClick && sendToBack(card.id)}
+          animate={{
+            rotateZ: isHovered ? (index - (stack.length - 1) / 2) * 15 : (stack.length - index - 1) * 4 + randomRotate,
+            x: isHovered ? (index - (stack.length - 1) / 2) * (isMobile ? 110 : 210) : 0,
+            transformOrigin: 'center center',
+          }}
+          initial={false}
+          transition={{
+            type: 'spring',
+            stiffness: animationConfig.stiffness,
+            damping: animationConfig.damping
+          }}
+        >
               {card.content}
             </motion.div>
           </CardRotate>
