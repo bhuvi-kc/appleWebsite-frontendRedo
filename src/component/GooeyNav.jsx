@@ -1,7 +1,8 @@
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 
 const GooeyNav = ({
-  items,
+  items = [],
   animationTime = 600,
   particleCount = 15,
   particleDistances = [90, 10],
@@ -15,6 +16,12 @@ const GooeyNav = ({
   const filterRef = useRef(null);
   const textRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(initialActiveIndex);
+  const location = useLocation();
+
+  useEffect(() => {
+    const index = items.findIndex(item => item.href === location.pathname);
+    if (index !== -1) setActiveIndex(index);
+  }, [location.pathname]);
 
   const noise = (n = 1) => n / 2 - Math.random() * n;
   const getXY = (distance, pointIndex, totalPoints) => {
@@ -129,7 +136,6 @@ const GooeyNav = ({
 
   return (
     <>
-      {/* This effect is quite difficult to recreate faithfully using Tailwind, so a style tag is a necessary workaround */}
       <style>
         {`
           :root {
@@ -157,9 +163,10 @@ const GooeyNav = ({
           .effect.filter::before {
             content: "";
             position: absolute;
-            inset: -75px;
+            inset: -15px;
             z-index: -2;
             background: black;
+            border-radius: 9px;
           }
           .effect.filter::after {
             content: "";
@@ -168,7 +175,7 @@ const GooeyNav = ({
             background: white;
             transform: scale(0);
             opacity: 0;
-            z-index: -1;
+            z-index: -0.5;
             border-radius: 9999px;
           }
           .effect.active::after {
@@ -285,14 +292,14 @@ const GooeyNav = ({
                   activeIndex === index ? 'active' : ''
                 }`}
               >
-                <a
+                <Link
+                  to={item.href}
                   onClick={e => handleClick(e, index)}
-                  href={item.href}
                   onKeyDown={e => handleKeyDown(e, index)}
                   className="outline-none py-[0.6em] px-[1em] inline-block"
                 >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
